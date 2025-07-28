@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Disease Prediction</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; background-color: #f4f4f4; }
+        .container { max-width: 800px; margin: auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+        h1 { text-align: center; color: #333; }
+        .upload-section { margin-bottom: 20px; padding: 15px; border: 1px solid #ddd; border-radius: 5px; background-color: #e9e9e9; }
+        input[type="file"] { margin-bottom: 10px; }
+        input[type="submit"] { background-color: #4CAF50; color: white; padding: 10px 15px; border: none; border-radius: 5px; cursor: pointer; }
+        input[type="submit"]:hover { background-color: #45a049; }
+        .error { color: red; font-weight: bold; margin-top: 10px; }
+        .result-section { margin-top: 20px; padding: 15px; border: 1px solid #ccc; border-radius: 5px; background-color: #f9f9f9; }
+        .result-section img { max-width: 100%; height: auto; display: block; margin: 10px auto; border: 1px solid #ddd; }
+        .detail-item { margin-bottom: 5px; }
+        .detail-item strong { color: #555; }
+        ul { list-style-type: disc; margin-left: 20px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Plant Disease Prediction</h1>
+
+        <div class="upload-section">
+            <form action="/disease-predict" method="post" enctype="multipart/form-data">
+                <label for="imageUpload">Upload a plant leaf image:</label><br>
+                <input type="file" id="imageUpload" name="imageUpload" accept="image/*"><br>
+                <input type="submit" value="Predict Disease">
+            </form>
+            {% if error_message %}
+                <p class="error">{{ error_message }}</p>
+            {% endif %}
+        </div>
+
+        {% if image_url and disease_identified %}
+        <div class="result-section">
+            <h2>Prediction Result:</h2>
+            <img src="{{ image_url }}" alt="Uploaded Image">
+            <div class="detail-item"><strong>Disease Identified:</strong> {{ disease_identified }}</div>
+            <div class="detail-item"><strong>Confidence:</strong> {{ confidence }}</div>
+            <div class="detail-item"><strong>Severity:</strong> {{ severity }}</div>
+            <div class="detail-item"><strong>Description:</strong> {{ description }}</div>
+            
+            <h3>Symptoms:</h3>
+            <ul>
+                {% for symptom in common_symptoms %}
+                    <li>{{ symptom }}</li>
+                {% endfor %}
+            </ul>
+
+            <h3>Immediate Actions:</h3>
+            <ul>
+                {% for action in immediate_actions %}
+                    <li>{{ action }}</li>
+                {% endfor %}
+            </ul>
+
+            <h3>Prevention Tips:</h3>
+            <ul>
+                {% for tip in prevention_tips %}
+                    <li>{{ tip }}</li>
+                {% endfor %}
+            </ul>
+
+            <h3>Medicine/Pesticide Advice:</h3>
+            <div class="detail-item">{{ solution_dawai }}</div>
+
+            <h3>Fertilizer Advice:</h3>
+            <div class="detail-item">{{ solution_fertilizer }}</div>
+
+            <h3>General Advice:</h3>
+            <div class="detail-item">{{ solution_general_advice }}</div>
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>
